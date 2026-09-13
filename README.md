@@ -1,3 +1,19 @@
+> **Fork with Google speaker-group support.**
+>
+> The upstream project [`Nerahikada/chromecast-sink`](https://github.com/Nerahikada/chromecast-sink)
+> streams to a single Cast device. This fork adds one thing: `--device "<group name>"` now streams to a
+> whole **Google speaker group** (all members in sync), by using the Cast port advertised over mDNS
+> instead of the hardcoded `8009` (groups run on the leader on a different port, e.g. `32012`).
+> It also builds on current toolchains (`pipewire-rs` 0.10).
+>
+> The build fix was offered back upstream; the speaker-group change lives here because the upstream
+> project intentionally targets a single device (and points to
+> [`p-cast`](https://github.com/GenessyX/p-cast) for groups over HLS/HTTP, which has ~3 s of latency).
+>
+> Everything below is the original README, unchanged.
+
+---
+
 # chromecast-sink
 
 Use Google Chromecast / Nest devices as a Linux speaker output.
