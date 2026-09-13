@@ -10,7 +10,7 @@
 > project intentionally targets a single device (and points to
 > [`p-cast`](https://github.com/GenessyX/p-cast) for groups over HLS/HTTP, which has ~3 s of latency).
 >
-> Everything below is the original README, unchanged.
+> The rest below is the upstream README; only the Scope note is adjusted to match this fork.
 
 ---
 
@@ -52,7 +52,7 @@ After starting, select **"Chromecast - \<device name\>"** as your audio output i
 
 ## Scope
 
-This tool does one thing: low-latency Cast Streaming to a single device.
+This tool does low-latency Cast Streaming to a single device **or a Google speaker group** (this fork adds the speaker-group part).
 
 If you want HTTP-based streaming instead — broader device compatibility and a virtual sink per discovered device, at the cost of several seconds of latency — use [p-cast](https://github.com/GenessyX/p-cast), which serves HLS segments over HTTP.
 
