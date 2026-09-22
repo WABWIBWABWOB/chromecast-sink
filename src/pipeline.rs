@@ -25,6 +25,20 @@ pub fn run(device_name: Option<&str>) -> Result<()> {
     run_with_device(device)
 }
 
+/// Bypasses mDNS discovery for a known host (`--host`). Audio-only is assumed: a Google speaker or
+/// speaker group; a video Chromecast would need the AudioVideo offer that discovery derives from `ca`.
+/// `name` is only used for the sink name and status output; the target is not verified against it.
+pub fn run_with_host(name: &str, host: &str, port: u16) -> Result<()> {
+    println!("Skipping discovery: connecting to {host}:{port} as \"{name}\"...");
+    run_with_device(Device {
+        friendly_name: name.to_string(),
+        model: None,
+        host: host.to_string(),
+        port,
+        is_audio_only: true,
+    })
+}
+
 /// Bypasses mDNS discovery; used by integration tests that can't rely on multicast.
 pub fn run_with_device(device: Device) -> Result<()> {
     println!("Selected: {}", device.friendly_name);
