@@ -1,16 +1,12 @@
-> **Fork with Google speaker-group support.**
+> **Fork of [`Nerahikada/chromecast-sink`](https://github.com/Nerahikada/chromecast-sink) with Windows builds and `--host/--port`.**
 >
-> The upstream project [`Nerahikada/chromecast-sink`](https://github.com/Nerahikada/chromecast-sink)
-> streams to a single Cast device. This fork adds one thing: `--device "<group name>"` now streams to a
-> whole **Google speaker group** (all members in sync), by using the Cast port advertised over mDNS
-> instead of the hardcoded `8009` (groups run on the leader on a different port, e.g. `32012`).
-> It also builds on current toolchains (`pipewire-rs` 0.10).
+> - **Speaker groups** (Cast port from mDNS) and the `pipewire-rs` 0.10 build are upstream now.
+> - **Windows support** (WASAPI loopback, see [Windows](#windows) below) is offered upstream as
+>   [PR #5](https://github.com/Nerahikada/chromecast-sink/pull/5). Prebuilt `.exe` on this fork's Releases page.
+> - **`--host <IP> --port <PORT>`** skips mDNS for a speaker-group leader that stops answering
+>   multicast mDNS while idle. Only in this fork.
 >
-> The build fix was offered back upstream; the speaker-group change lives here because the upstream
-> project intentionally targets a single device (and points to
-> [`p-cast`](https://github.com/GenessyX/p-cast) for groups over HLS/HTTP, which has ~3 s of latency).
->
-> The rest below is the upstream README; only the Scope note is adjusted to match this fork.
+> The rest below is the upstream README plus the Windows section.
 
 ---
 
@@ -49,6 +45,27 @@ chromecast-sink --device "Living Room speaker"
 ```
 
 After starting, select **"Chromecast - \<device name\>"** as your audio output in Settings > Sound.
+
+```bash
+# Skip mDNS and connect to a speaker group's leader directly (fork only)
+chromecast-sink --device "Living Room group" --host 192.0.2.10 --port 32012
+```
+
+The group's port is in its mDNS SRV record, or in the leader's `eureka_info` under `multizone.groups[].cast_port`.
+
+## Windows
+
+Windows can't create a virtual output device from a normal app, so on Windows chromecast-sink captures an existing playback device via WASAPI loopback instead. Install [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) (free) and use its **CABLE Input** device, which is the default:
+
+```powershell
+chromecast-sink.exe --list-devices                       # playback devices it can capture
+chromecast-sink.exe --device "Living Room speaker"       # casts whatever plays on "CABLE Input"
+chromecast-sink.exe --device "Living Room speaker" --capture-device "Speakers"
+```
+
+Then select **CABLE Input** as your output in Settings > Sound. Nothing plays locally on that device, so it behaves like the Linux sink. Windows may ask for a firewall exception on the first run; mDNS discovery needs inbound UDP on private networks.
+
+**Build**: Rust 1.85+, Visual Studio Build Tools (C++), and CMake.
 
 ## Scope
 
