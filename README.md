@@ -69,7 +69,7 @@ Then select **CABLE Input** as your output in Settings > Sound. Nothing plays lo
 
 ## Scope
 
-This tool does low-latency Cast Streaming to a single device **or a Google speaker group** (this fork adds the speaker-group part).
+This tool does low-latency Cast Streaming to a single device **or a Google speaker group**.
 
 If you want HTTP-based streaming instead — broader device compatibility and a virtual sink per discovered device, at the cost of several seconds of latency — use [p-cast](https://github.com/GenessyX/p-cast), which serves HLS segments over HTTP.
 
