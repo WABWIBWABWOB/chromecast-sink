@@ -1,16 +1,14 @@
-> **Fork with Google speaker-group support.**
+> **Fork of [`Nerahikada/chromecast-sink`](https://github.com/Nerahikada/chromecast-sink).**
 >
-> The upstream project [`Nerahikada/chromecast-sink`](https://github.com/Nerahikada/chromecast-sink)
-> streams to a single Cast device. This fork adds one thing: `--device "<group name>"` now streams to a
-> whole **Google speaker group** (all members in sync), by using the Cast port advertised over mDNS
-> instead of the hardcoded `8009` (groups run on the leader on a different port, e.g. `32012`).
-> It also builds on current toolchains (`pipewire-rs` 0.10).
+> The speaker-group support that this branch was made for (Cast port from mDNS instead of the hardcoded
+> `8009`) and the `pipewire-rs` 0.10 build are **upstream now**, so for Linux, use upstream.
 >
-> The build fix was offered back upstream; the speaker-group change lives here because the upstream
-> project intentionally targets a single device (and points to
-> [`p-cast`](https://github.com/GenessyX/p-cast) for groups over HLS/HTTP, which has ~3 s of latency).
+> This fork's current work is on the branch
+> [`luna/windows-wasapi`](https://github.com/WABWIBWABWOB/chromecast-sink/tree/luna/windows-wasapi):
+> Windows support (offered upstream as [PR #5](https://github.com/Nerahikada/chromecast-sink/pull/5)),
+> prebuilt binaries on the [Releases](https://github.com/WABWIBWABWOB/chromecast-sink/releases) page.
 >
-> The rest below is the upstream README; only the Scope note is adjusted to match this fork.
+> The rest below is the upstream README as of this branch.
 
 ---
 
