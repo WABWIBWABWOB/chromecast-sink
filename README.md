@@ -1,10 +1,13 @@
-> **Fork of [`Nerahikada/chromecast-sink`](https://github.com/Nerahikada/chromecast-sink) with Windows builds and `--host/--port`.**
+> **Fork of [`Nerahikada/chromecast-sink`](https://github.com/Nerahikada/chromecast-sink) with Windows builds.**
 >
 > - **Speaker groups** (Cast port from mDNS) and the `pipewire-rs` 0.10 build are upstream now.
 > - **Windows support** (WASAPI loopback, see [Windows](#windows) below) is offered upstream as
 >   [PR #5](https://github.com/Nerahikada/chromecast-sink/pull/5). Prebuilt `.exe` on this fork's Releases page.
-> - **`--host <IP> --port <PORT>`** skips mDNS for a speaker-group leader that stops answering
->   multicast mDNS while idle. Only in this fork.
+>   Two differences to the PR as it stands: this build captures **CABLE Input** by default (the PR captures
+>   the default playback device), and it has a [stop event](#stopping-a-hidden-instance-windows) for launchers
+>   (dropped from the PR on review).
+> - **`--host <IP> --port <PORT>`**: upstream has its own `--host`/`--port` now. This fork's version additionally
+>   accepts `--device` together with `--host`, for a speaker-group leader that stops answering multicast mDNS while idle.
 >
 > The rest below is the upstream README plus the Windows section.
 
@@ -64,6 +67,16 @@ chromecast-sink.exe --device "Living Room speaker" --capture-device "Speakers"
 ```
 
 Then select **CABLE Input** as your output in Settings > Sound. Nothing plays locally on that device, so it behaves like the Linux sink. Windows may ask for a firewall exception on the first run; mDNS discovery needs inbound UDP on private networks.
+
+### Stopping a hidden instance (Windows)
+
+A process started without a console window can't receive Ctrl+C, and killing it skips the receiver teardown, so the speaker keeps waiting for a stream that is gone. This build therefore listens on the named event `Local\chromecast-sink-stop`. Signalling it stops the cast the same way Ctrl+C does:
+
+```powershell
+([System.Threading.EventWaitHandle]::OpenExisting('Local\chromecast-sink-stop')).Set()
+```
+
+The event is per session (`Local\`), so only processes of the same user session can stop it. Fork only; it was dropped from the upstream PR because upstream has no launcher that uses it.
 
 **Build**: Rust 1.85+, Visual Studio Build Tools (C++), and CMake.
 
